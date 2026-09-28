@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NULL//CATHEDRAL</title>
+  <meta name="description" content="A darkcore glitch-signal trading card game, playable in the browser.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Share+Tech+Mono&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="noise"></div>
+
+  <nav class="nav">
+    <button class="logo" data-go="title">NULL<em>//</em>CATHEDRAL</button>
+    <div class="nav-links">
+      <button data-go="battle">BATTLE</button>
+      <button data-go="packs">PACKS</button>
+      <button data-go="collection">ARCHIVE</button>
+      <button data-go="deck">DECK</button>
+    </div>
+    <div id="wallet" class="wallet"></div>
+  </nav>
+
+  <main>
+    <section class="screen" id="scr-title">
+      <div id="title-bg"></div>
+      <div class="title-wrap">
+        <div class="title-text">
+          <div class="pre">▚▚ SIGNAL ACQUIRED ▚▚ CARRIER 0x00 ▚▚</div>
+          <h1 class="mega glitch" data-text="Null Cathedral">Null Cathedral</h1>
+          <div class="sub">a darkcore trading card game transmitted from the floor beneath the last floor</div>
+          <div class="menu">
+            <button class="btn big" data-go="battle">ENTER BATTLE</button>
+            <button class="btn" data-go="packs">OPEN PACKS</button>
+            <button class="btn ghost" data-go="collection">ARCHIVE</button>
+            <button class="btn ghost" data-go="deck">DECK</button>
+            <button class="btn ghost" id="btn-how">HOW TO PLAY</button>
+          </div>
+          <div id="title-stats" class="stats"></div>
+          <button class="reset" id="btn-reset">wipe save</button>
+        </div>
+        <div id="title-fan" class="fan"></div>
+      </div>
+    </section>
+    <section class="screen" id="scr-battle"></section>
+    <section class="screen" id="scr-packs"></section>
+    <section class="screen" id="scr-collection"></section>
+    <section class="screen" id="scr-deck"></section>
+  </main>
+
+  <div id="modal"></div>
+
+  <script src="js/cards.js"></script>
+  <script src="js/art.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
