@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MuseSpark</title>
+  <meta name="description" content="MuseSpark: turn your Suno songs into karaoke nights and song music videos, right in the browser.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="nav">
+    <a class="logo" href="#/home"><span class="spark">✦</span>Muse<b>Spark</b></a>
+    <div class="nav-links">
+      <a href="#/library" data-nav="library">Library</a>
+      <a href="#/inspire" data-nav="inspire">Imagine</a>
+      <a href="#/studio" data-nav="studio">Sync</a>
+      <a href="#/stage" data-nav="stage">Sing</a>
+      <a href="#/smv" data-nav="smv">SMV</a>
+      <a href="#/settings" data-nav="settings" title="Settings &amp; VoiceStudio">⚙</a>
+    </div>
+    <div class="vs-pill" id="vs-pill" title="VoiceStudio connection"><i></i><span>VoiceStudio</span></div>
+  </nav>
+
+  <main>
+    <!-- ═════════ HOME ═════════ -->
+    <section class="screen" id="scr-home">
+      <canvas id="home-bg"></canvas>
+      <div class="hero">
+        <div class="kicker">Suno songs → karaoke nights → song music videos</div>
+        <h1 class="mega">Muse<span>Spark</span></h1>
+        <div class="motto"><span>Imagine.</span> <span>Create.</span> <span>Inspire.</span></div>
+        <p class="lede">Bring in a song you made with Suno. Sync its lyrics by tapping along or automatically with VoiceStudio. Then sing it on a karaoke stage or render a lyric video to share.</p>
+        <div class="row">
+          <a class="btn big" href="#/library">Open your library</a>
+          <button class="btn ghost" id="btn-demo">Try the demo song</button>
+        </div>
+      </div>
+      <div class="pillars">
+        <a class="pillar" href="#/inspire"><b>01 · Imagine</b><h3>Spark ideas</h3><p>Style prompts for Suno, song structures, theme banks and a daily challenge.</p></a>
+        <a class="pillar" href="#/studio"><b>02 · Create</b><h3>Sync &amp; direct</h3><p>Tap-sync lyrics, or auto-sync word by word with VoiceStudio. Export as LRC.</p></a>
+        <a class="pillar" href="#/stage"><b>03 · Inspire</b><h3>Sing &amp; share</h3><p>A karaoke stage with scoring and recorded takes, plus an SMV maker that exports video.</p></a>
+      </div>
+      <figure class="founder">
+        <blockquote>“Every Suno song starts as a spark, and it deserves a stage. MuseSpark is where your songs get sung, filmed and shared.”</blockquote>
+        <figcaption id="founder-name"></figcaption>
+      </figure>
+    </section>
+
+    <!-- ═════════ LIBRARY ═════════ -->
+    <section class="screen" id="scr-library">
+      <header class="page-head">
+        <div><h2>Library</h2><p class="muted">Songs, stems, lyrics and takes. Everything stays in this browser.</p></div>
+        <div class="row">
+          <button class="btn ghost" id="lib-demo">+ Demo song</button>
+          <button class="btn" id="lib-add">+ Import Suno song</button>
+        </div>
+      </header>
+      <div class="dropzone" id="dropzone">Drop audio files here to import them. MP3, WAV, M4A and more are supported.</div>
+      <div class="song-grid" id="song-grid"></div>
+    </section>
+
+    <!-- ═════════ INSPIRE ═════════ -->
+    <section class="screen" id="scr-inspire">
+      <header class="page-head">
+        <div><h2>Imagine</h2><p class="muted">Ideas for your next Suno song. Lock the parts you like, then spark again.</p></div>
+      </header>
+      <div class="inspire-grid">
+        <div class="panel">
+          <h3>Style prompt spark</h3>
+          <div class="chips" id="ins-chips"></div>
+          <div class="prompt-out" id="ins-prompt"></div>
+          <div class="row">
+            <button class="btn" id="ins-spark">✦ Spark</button>
+            <button class="btn ghost" id="ins-copy">Copy prompt</button>
+            <span class="muted small" id="ins-len"></span>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Song blueprint</h3>
+          <label>Theme <input id="ins-theme" placeholder="e.g. neon rain, first love, leaving home"></label>
+          <label>Structure <select id="ins-structure"></select></label>
+          <textarea id="ins-lyrics" rows="14" spellcheck="false"></textarea>
+          <div class="row">
+            <button class="btn ghost" id="ins-blueprint">Rebuild blueprint</button>
+            <button class="btn ghost" id="ins-copy-lyrics">Copy</button>
+            <button class="btn" id="ins-draft">Save as song draft</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Today's challenge</h3>
+          <div class="challenge" id="ins-challenge"></div>
+          <h3>Theme word bank</h3>
+          <div class="wordbank" id="ins-bank"></div>
+        </div>
+        <div class="panel">
+          <h3>Voice spark <span class="tag">VoiceStudio</span></h3>
+          <p class="muted small">Make a spoken intro, a shout-out or an MC announcement with VoiceStudio's local text-to-speech, then attach it to a song as its SMV intro.</p>
+          <textarea id="vs-say" rows="3">Ladies and gentlemen, give it up for tonight's featured song.</textarea>
+          <div class="row">
+            <select id="vs-voice"><option value="default">default voice</option></select>
+            <label class="inline">Speed <input type="number" id="vs-speed" value="1" min="0.5" max="2" step="0.1"></label>
+          </div>
+          <div class="row">
+            <button class="btn" id="vs-speak">Generate voice</button>
+            <select id="vs-attach-song"></select>
+            <button class="btn ghost" id="vs-attach" disabled>Attach as intro</button>
+          </div>
+          <audio id="vs-audio" controls hidden></audio>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════ STUDIO (SYNC) ═════════ -->
+    <section class="screen" id="scr-studio">
+      <header class="page-head">
+        <div><h2>Sync studio</h2><p class="muted" id="studio-title">Choose a song to sync.</p></div>
+        <div class="row">
+          <select class="song-pick" data-route="studio"></select>
+        </div>
+      </header>
+      <div class="studio" id="studio-body">
+        <div class="panel studio-side">
+          <div class="transport">
+            <button class="btn icon" id="st-play">▶</button>
+            <span class="mono" id="st-time">0:00.00</span>
+            <input type="range" id="st-seek" min="0" max="1000" value="0">
+          </div>
+          <div class="tapbox">
+            <button class="btn big tap" id="st-tap">TAP<small>Space</small></button>
+            <p class="muted small">Play the song and tap <kbd>Space</kbd> at the start of each highlighted line.<br>
+              <kbd>↑</kbd>/<kbd>↓</kbd> selects a line · <kbd>←</kbd>/<kbd>→</kbd> nudges it by 50 ms · <kbd>Backspace</kbd> clears it · <kbd>Enter</kbd> jumps to it</p>
+          </div>
+          <label class="inline">Playback speed
+            <select id="st-rate"><option value="1">1×</option><option value="0.85">0.85×</option><option value="0.7">0.7×</option></select>
+          </label>
+          <hr>
+          <h3>Auto-sync <span class="tag">VoiceStudio</span></h3>
+          <p class="muted small">VoiceStudio transcribes the vocals with word timestamps, then MuseSpark lines those words up with your lyrics. Upload the Suno vocal stem for the most accurate result.</p>
+          <label class="inline">Language <input id="st-lang" placeholder="auto" size="6"></label>
+          <button class="btn" id="st-auto">Auto-sync words</button>
+          <div class="muted small" id="st-auto-status"></div>
+          <hr>
+          <div class="row wrap">
+            <button class="btn ghost" id="st-edit-lyrics">Edit lyrics</button>
+            <label class="btn ghost file">Import LRC<input type="file" id="st-lrc-in" accept=".lrc,.txt"></label>
+            <button class="btn ghost" id="st-lrc-out">Export LRC</button>
+            <button class="btn ghost danger" id="st-clear">Clear timings</button>
+          </div>
+        </div>
+        <div class="panel studio-lines">
+          <ol id="st-lines"></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════ STAGE (KARAOKE) ═════════ -->
+    <section class="screen" id="scr-stage">
+      <div class="stage" id="stage">
+        <canvas id="stage-bg"></canvas>
+        <div class="stage-top">
+          <select class="song-pick" data-route="stage"></select>
+          <div class="score" id="stage-score" hidden><b>0</b><span>SPARK SCORE</span></div>
+        </div>
+        <div class="lyrics" id="stage-lyrics">
+          <div class="section-tag" id="lx-section"></div>
+          <div class="countdown" id="lx-count"></div>
+          <div class="line prev" id="lx-prev"></div>
+          <div class="line cur" id="lx-cur"></div>
+          <div class="line next" id="lx-next"></div>
+        </div>
+        <div class="pitch" id="stage-pitch" hidden><span id="pitch-note">–</span><canvas id="pitch-trail" width="300" height="60"></canvas></div>
+        <div class="stage-controls">
+          <div class="transport">
+            <button class="btn icon" id="sg-play">▶</button>
+            <span class="mono" id="sg-time">0:00 / 0:00</span>
+            <input type="range" id="sg-seek" min="0" max="1000" value="0">
+          </div>
+          <div class="row wrap">
+            <label class="toggle"><input type="checkbox" id="sg-karaoke" checked><span>Karaoke mode</span></label>
+            <label class="inline">Guide vocal <input type="range" id="sg-guide" min="0" max="100" value="0"></label>
+            <label class="inline">Key <select id="sg-key"></select></label>
+            <label class="toggle"><input type="checkbox" id="sg-mic"><span>Mic</span></label>
+            <label class="inline">Mic vol <input type="range" id="sg-micvol" min="0" max="150" value="100"></label>
+            <button class="btn ghost" id="sg-rec">● Record take</button>
+            <button class="btn ghost icon" id="sg-full" title="Fullscreen">⛶</button>
+          </div>
+          <div class="muted small" id="sg-hint"></div>
+        </div>
+      </div>
+      <div class="takes panel" id="takes-panel">
+        <h3>Takes</h3>
+        <ul id="takes"></ul>
+      </div>
+    </section>
+
+    <!-- ═════════ SMV MAKER ═════════ -->
+    <section class="screen" id="scr-smv">
+      <header class="page-head">
+        <div><h2>SMV maker</h2><p class="muted">Build a song music video with lyrics, visuals and your cover art, then export it as video.</p></div>
+        <div class="row"><select class="song-pick" data-route="smv"></select></div>
+      </header>
+      <div class="smv">
+        <div class="smv-view">
+          <div class="smv-frame" id="smv-frame"><canvas id="smv-canvas"></canvas></div>
+          <div class="transport">
+            <button class="btn icon" id="sm-play">▶</button>
+            <span class="mono" id="sm-time">0:00</span>
+            <input type="range" id="sm-seek" min="0" max="1000" value="0">
+          </div>
+        </div>
+        <div class="panel smv-side">
+          <h3>Look</h3>
+          <div class="theme-pick" id="sm-themes"></div>
+          <label class="inline">Format
+            <select id="sm-aspect">
+              <option value="16:9">16:9 · YouTube</option>
+              <option value="9:16">9:16 · Shorts / Reels / TikTok</option>
+              <option value="1:1">1:1 · Square</option>
+            </select>
+          </label>
+          <label class="inline">Accent <input type="color" id="sm-accent" value="#ff4fa3"></label>
+          <label class="inline">Lyrics
+            <select id="sm-lyric-mode">
+              <option value="wipe">Karaoke wipe</option>
+              <option value="pop">Word pop</option>
+              <option value="line">Line fade</option>
+            </select>
+          </label>
+          <label class="toggle"><input type="checkbox" id="sm-viz" checked><span>Audio visualizer</span></label>
+          <label class="toggle"><input type="checkbox" id="sm-karaoke"><span>Instrumental audio (karaoke SMV)</span></label>
+          <label class="btn ghost file">Background image<input type="file" id="sm-bg" accept="image/*"></label>
+          <hr>
+          <h3>Intro</h3>
+          <label class="toggle"><input type="checkbox" id="sm-titlecard" checked><span>Title card</span></label>
+          <label class="toggle"><input type="checkbox" id="sm-intro-voice"><span>Voice intro (from Imagine › Voice spark)</span></label>
+          <hr>
+          <h3>Export</h3>
+          <div class="row">
+            <label class="inline">From <input type="number" id="sm-from" value="0" min="0" step="0.5"></label>
+            <label class="inline">To <input type="number" id="sm-to" min="0" step="0.5" placeholder="end"></label>
+          </div>
+          <label class="inline">Quality
+            <select id="sm-res"><option value="1">1080p</option><option value="0.6667">720p</option></select>
+          </label>
+          <button class="btn big" id="sm-export">⏺ Render video</button>
+          <div class="progress" id="sm-progress" hidden><i></i></div>
+          <div class="muted small" id="sm-status">Rendering happens in real time. Keep this tab in the foreground until it finishes.</div>
+          <a class="btn" id="sm-download" hidden>⬇ Download video</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════ SETTINGS ═════════ -->
+    <section class="screen" id="scr-settings">
+      <header class="page-head"><div><h2>Settings</h2></div></header>
+      <div class="settings-grid">
+        <div class="panel">
+          <h3>VoiceStudio connection</h3>
+          <p class="muted small">MuseSpark talks to a <a href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener">VoiceStudio</a> backend running on your own machine. It uses VoiceStudio's OpenAI-compatible API: <code>/v1/audio/transcriptions</code> for lyric sync and <code>/v1/audio/speech</code> for voice intros. Audio only goes to the address you enter here.</p>
+          <label>API base URL <input id="set-vs-url" placeholder="http://127.0.0.1:3900"></label>
+          <label>API key (only for remote backends) <input id="set-vs-key" type="password" autocomplete="off"></label>
+          <div class="row"><button class="btn" id="set-vs-test">Test connection</button><span class="muted small" id="set-vs-status"></span></div>
+          <details>
+            <summary>Seeing a CORS error?</summary>
+            <p class="small">VoiceStudio only accepts browser requests from origins it trusts. Start its backend with this page's origin added:</p>
+            <pre id="set-cors"></pre>
+          </details>
+        </div>
+        <div class="panel">
+          <h3>Karaoke</h3>
+          <label>Lyric timing offset (ms) <input type="number" id="set-offset" step="10"></label>
+          <p class="muted small">Use a positive value if lyrics appear too early, for example on Bluetooth speakers.</p>
+          <label>Founder display name <input id="set-founder"></label>
+        </div>
+        <div class="panel">
+          <h3>Data</h3>
+          <p class="muted small" id="set-storage"></p>
+          <button class="btn ghost danger" id="set-wipe">Delete all songs and takes</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- song import / edit dialog -->
+  <dialog id="dlg-song">
+    <form method="dialog" id="song-form">
+      <h3 id="dlg-song-title">Import Suno song</h3>
+      <div class="form-grid">
+        <label>Title <input name="title" required></label>
+        <label>Artist <input name="artist" placeholder="you"></label>
+        <label class="span2">Suno style prompt <input name="style" placeholder="dreamy synthpop, female vocals, 110 bpm"></label>
+        <label class="file-field">Full song audio <input type="file" name="audio" accept="audio/*,video/mp4"><small data-has="audio"></small></label>
+        <label class="file-field">Cover art <input type="file" name="cover" accept="image/*"><small data-has="cover"></small></label>
+        <label class="file-field">Instrumental stem (optional) <input type="file" name="instrumental" accept="audio/*"><small data-has="instrumental"></small></label>
+        <label class="file-field">Vocal stem (optional) <input type="file" name="vocals" accept="audio/*"><small data-has="vocals"></small></label>
+        <label class="span2">Lyrics: paste them from Suno, <code>[Verse]</code> and <code>[Chorus]</code> tags included. LRC also works.
+          <textarea name="lyrics" rows="10" spellcheck="false"></textarea></label>
+      </div>
+      <p class="muted small">Stems give you real karaoke: the instrumental plays with the vocals fully removed, and the vocal stem powers the guide vocal and pitch scoring. Without stems, MuseSpark reduces the vocals by filtering the full mix.</p>
+      <div class="row end">
+        <button class="btn ghost" value="cancel" formnovalidate>Cancel</button>
+        <button class="btn" value="save" id="dlg-song-save">Save song</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast"></div>
+
+  <script src="js/util.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/lyrics.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/voicestudio.js"></script>
+  <script src="js/demo.js"></script>
+  <script src="js/inspire.js"></script>
+  <script src="js/stage.js"></script>
+  <script src="js/smv.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

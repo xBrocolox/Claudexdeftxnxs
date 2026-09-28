@@ -2,6 +2,8 @@
 
 A darkcore / gothcore / glitch-signal trading card game that runs in the browser. There's no build step and no dependencies. It takes its mood from vast silent megastructures, biomechanical saints and corrupted transmissions. Every card, name and piece of art is original.
 
+> Also in this repo: **[MuseSpark](musespark/)**, a browser app for turning Suno songs into karaoke and song music videos, powered by [VoiceStudio](https://github.com/debpalash/VoiceStudio).
+
 ## Play
 
 Open `index.html` in a browser, or serve the folder:
