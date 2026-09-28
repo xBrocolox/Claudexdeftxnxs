@@ -1,0 +1,69 @@
+{
+  "assets": [
+    {
+      "id": "hero_sable",
+      "kind": "character",
+      "prompt": "a lone swordswoman in a torn black synthetic coat with a gravitational-beam blade and a cracked halo of wires, idle breathing stance, subtle cloth sway, spirit-summoner energy like Final Fantasy X, fused with a demon-possession motif like Shadow Hearts",
+      "aspect_ratio": "9:16",
+      "chroma": true,
+      "frames": 24,
+      "grid": [6, 4]
+    },
+    {
+      "id": "hero_wisp",
+      "kind": "character",
+      "prompt": "a young hacker-mage wearing a hooded bodysuit with a floating data-grimoire and glowing code runes, idle floating pose, digital MMO-world avatar feeling like .hack, keyblade-shaped staff",
+      "aspect_ratio": "9:16",
+      "chroma": true,
+      "frames": 24,
+      "grid": [6, 4]
+    },
+    {
+      "id": "enemy_silicate_saint",
+      "kind": "enemy",
+      "prompt": "a towering emaciated silicon-based lifeform saint with elongated limbs, porcelain mask face, exposed ribbed tubing and a dripping black halo, menacing slow sway",
+      "aspect_ratio": "1:1",
+      "chroma": true,
+      "frames": 24,
+      "grid": [6, 4]
+    },
+    {
+      "id": "enemy_cocoon_moth",
+      "kind": "enemy",
+      "prompt": "a giant biomechanical moth emerging from a cracked glass cocoon, wings made of static and circuit veins, slow wing beats, dreamlike like the game Kuon/Cocoon",
+      "aspect_ratio": "1:1",
+      "chroma": true,
+      "frames": 24,
+      "grid": [6, 4]
+    },
+    {
+      "id": "env_megastructure",
+      "kind": "environment",
+      "prompt": "slow forward dolly through an endless megastructure corridor, colossal stairways into darkness, hanging cables, distant flickering lights, time-gate ruins like Chrono Trigger swallowed by concrete, no characters",
+      "aspect_ratio": "16:9",
+      "chroma": false,
+      "frames": 32,
+      "grid": [8, 4],
+      "loop": true
+    },
+    {
+      "id": "env_null_shore",
+      "kind": "environment",
+      "prompt": "a dead ocean shore under a black sky with a shattered moon, broken stone ruins and a sunken airship, gentle waves of static, ethereal spirits drifting like pyreflies, wide cinematic shot, no characters",
+      "aspect_ratio": "16:9",
+      "chroma": false,
+      "frames": 32,
+      "grid": [8, 4],
+      "loop": true
+    },
+    {
+      "id": "fx_rift_burst",
+      "kind": "fx",
+      "prompt": "a spiraling explosion of corrupted light and glitch shards, magic spell burst, cyan and red chromatic split",
+      "aspect_ratio": "1:1",
+      "chroma": true,
+      "frames": 16,
+      "grid": [4, 4]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "prefix": "PS2-era JRPG, darkcore, glitchcore, deftxnxs-inspired dark digital art, Tsutomu Nihei biomechanical megastructure aesthetic, towering silent concrete and cable architecture, cold fog, chromatic aberration, datamosh artifacts, scanlines, desaturated palette with toxic cyan and blood red accents",
+  "negative": "bright cheerful colors, cartoon, chibi, text, watermark, logo, signature, blurry, low detail, deformed hands, extra fingers",
+  "chroma_suffix": "isolated on a flat solid pure green (#00ff00) background, full body visible, centered, no shadows on background, static camera",
+  "defaults": {
+    "model": "v4.5",
+    "quality": "540p",
+    "duration": 5,
+    "motion_mode": "normal",
+    "aspect_ratio": "16:9"
+  }
+}
