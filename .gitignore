@@ -3,3 +3,4 @@ pipeline/pixverse/raw/*
 !pipeline/pixverse/raw/.gitkeep
 __pycache__/
 *.blend1
+dist-artifact/

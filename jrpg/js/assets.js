@@ -20,8 +20,13 @@ export const Assets = {
   async load(onProgress) {
     const loader = new GLTFLoader();
     let done = 0;
+    // artifact builds ship the GLBs base64-encoded in js/models.js (window.VESTIGE_MODELS)
+    const embedded = globalThis.VESTIGE_MODELS;
     await Promise.all(MODELS.map(async (m) => {
-      this.gltf[m] = await loader.loadAsync(`assets/models/${m}.glb`);
+      if (embedded?.[m]) {
+        const bin = Uint8Array.from(atob(embedded[m]), (c) => c.charCodeAt(0));
+        this.gltf[m] = await loader.parseAsync(bin.buffer, '');
+      } else this.gltf[m] = await loader.loadAsync(`assets/models/${m}.glb`);
       onProgress?.(++done / (MODELS.length + 1));
     }));
     await this.loadPixverse();
