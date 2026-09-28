@@ -22,6 +22,16 @@ function toast(msg, kind = '') {
   setTimeout(() => e.remove(), 4200);
 }
 
+// Resolves true when the user confirms. Built into the page because native confirm() is blocked in some embeds.
+function askConfirm(msg, okLabel = 'Confirm') {
+  const d = $('#dlg-confirm');
+  $('#dlg-confirm-msg').textContent = msg;
+  $('#dlg-confirm-ok').textContent = okLabel;
+  d.returnValue = '';
+  d.showModal();
+  return new Promise(res => d.addEventListener('close', () => res(d.returnValue === 'yes'), { once: true }));
+}
+
 function download(blob, name) {
   const a = h('a');
   a.href = URL.createObjectURL(blob);

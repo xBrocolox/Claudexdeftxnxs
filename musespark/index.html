@@ -248,6 +248,7 @@
           <button class="btn big" id="sm-export">⏺ Render video</button>
           <div class="progress" id="sm-progress" hidden><i></i></div>
           <div class="muted small" id="sm-status">Rendering happens in real time. Keep this tab in the foreground until it finishes.</div>
+          <video id="sm-result" controls playsinline hidden></video>
           <a class="btn" id="sm-download" hidden>⬇ Download video</a>
         </div>
       </div>
@@ -303,6 +304,17 @@
       <div class="row end">
         <button class="btn ghost" value="cancel" formnovalidate>Cancel</button>
         <button class="btn" value="save" id="dlg-song-save">Save song</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- in-page confirmation (native confirm() is unavailable in embedded viewers) -->
+  <dialog id="dlg-confirm">
+    <form method="dialog">
+      <p id="dlg-confirm-msg"></p>
+      <div class="row end">
+        <button class="btn ghost" value="no">Cancel</button>
+        <button class="btn" value="yes" id="dlg-confirm-ok">Confirm</button>
       </div>
     </form>
   </dialog>

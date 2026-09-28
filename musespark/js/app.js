@@ -81,7 +81,7 @@ const Library = (() => {
         </div>`;
       $('[data-act=edit]', card).onclick = () => open(s);
       $('[data-act=lrc]', card).onclick = () => download(new Blob([Lyrics.toLRC(s)], { type: 'text/plain' }), safeName(s.title) + '.lrc');
-      $('[data-act=del]', card).onclick = async () => { if (confirm(`Delete “${s.title}” and its takes?`)) { await DB.deleteSong(s.id); render(); } };
+      $('[data-act=del]', card).onclick = async () => { if (await askConfirm(`Delete “${s.title}” and its takes?`, 'Delete')) { await DB.deleteSong(s.id); render(); } };
       grid.appendChild(card);
     }
   }
@@ -294,13 +294,13 @@ const Studio = (() => {
     $('#st-lrc-in').onchange = async (e) => {
       const f = e.target.files[0]; e.target.value = '';
       if (!f || !song) return;
-      if (song.lines.some(l => l.t != null) && !confirm('Replace the current lyrics and timings with this LRC?')) return;
+      if (song.lines.some(l => l.t != null) && !(await askConfirm('Replace the current lyrics and timings with this LRC?', 'Replace'))) return;
       song.lines = Lyrics.parse(await f.text()); song.lyricsRaw = Lyrics.toSheet(song.lines);
       await DB.saveSong(song); renderList(); toast(`Loaded ${song.lines.length} lines`);
     };
     $('#st-lrc-out').onclick = () => song && download(new Blob([Lyrics.toLRC(song)], { type: 'text/plain' }), safeName(song.title) + '.lrc');
     $('#st-clear').onclick = async () => {
-      if (!song || !confirm('Clear all timings for this song?')) return;
+      if (!song || !(await askConfirm('Clear all timings for this song?', 'Clear'))) return;
       song.lines.forEach(l => { l.t = null; l.words = null; });
       await DB.saveSong(song); renderList(); select(0);
     };
@@ -360,7 +360,7 @@ const SettingsPage = (() => {
         st.textContent = `Connected${info.protocol ? ` · ${info.protocol}` : ''}`;
       } catch (e) { st.textContent = e.message; }
     };
-    $('#set-wipe').onclick = async () => { if (confirm('Delete every song and take stored in this browser?')) { await DB.wipe(); toast('All data deleted'); show(); } };
+    $('#set-wipe').onclick = async () => { if (await askConfirm('Delete every song and take stored in this browser?', 'Delete all')) { await DB.wipe(); toast('All data deleted'); show(); } };
   }
   return { init, show };
 })();

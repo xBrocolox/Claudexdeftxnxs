@@ -306,7 +306,7 @@ const SMV = (() => {
     const { rec, done } = Engine.recorderFor(stream, 'video');
     introDur = intro ? intro.duration + 0.6 : 0;
     exporting = { rec, done, from, to, total: introDur + (to - from), vstream, started: false, cancelled: false };
-    $('#sm-export').textContent = '■ Cancel render'; $('#sm-progress').hidden = false; $('#sm-download').hidden = true;
+    $('#sm-export').textContent = '■ Cancel render'; $('#sm-progress').hidden = false; $('#sm-download').hidden = true; $('#sm-result').hidden = true;
     $('#sm-status').textContent = 'Rendering in real time. Keep this tab visible.';
     setControls(false);
     rec.start(1000);
@@ -333,7 +333,9 @@ const SMV = (() => {
     const ext = blob.type.includes('mp4') ? 'mp4' : 'webm';
     const a = $('#sm-download');
     if (a.href) URL.revokeObjectURL(a.href);
-    a.href = URL.createObjectURL(blob); a.download = `${safeName(song.title)}-${o.theme}-${o.aspect.replace(':', 'x')}.${ext}`; a.hidden = false;
+    a.href = URL.createObjectURL(blob);
+    const v = $('#sm-result'); v.src = a.href; v.hidden = false;
+    a.download = `${safeName(song.title)}-${o.theme}-${o.aspect.replace(':', 'x')}.${ext}`; a.hidden = false;
     $('#sm-status').textContent = `Done: ${(blob.size / 1048576).toFixed(1)} MB ${ext.toUpperCase()}. ${ext === 'webm' ? 'Most social apps accept WebM. Convert it with ffmpeg if yours doesn’t.' : ''}`;
   }
   function cancel() { if (exporting) { exporting.cancelled = true; finish(); } }

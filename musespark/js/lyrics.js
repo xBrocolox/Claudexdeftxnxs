@@ -97,7 +97,7 @@ const Lyrics = (() => {
     return newLines;
   }
 
-  const norm = (s) => String(s).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^\p{L}\p{N}\s]/gu, '').replace(/\s+/g, ' ').trim();
+  const norm = (s) => String(s).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^\p{L}\p{N}\s]/gu, '').replace(/\s+/g, ' ').trim();
   const tokens = (text) => String(text).split(/\s+/).filter(Boolean);
 
   const status = (lines) => {
