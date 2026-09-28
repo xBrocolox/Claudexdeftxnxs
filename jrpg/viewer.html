@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vestige Model Viewer</title>
+  <style>
+    :root { --bg: #050608; --ink: #d9dde3; --cyan: #4ff0ff; }
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 13px 'Share Tech Mono', ui-monospace, monospace; overflow: hidden; }
+    canvas { display: block; width: 100%; height: 100%; }
+    #bar { position: fixed; top: 12px; left: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+    #bar button { background: rgba(0,0,0,0.6); color: var(--ink); border: 1px solid rgba(79,240,255,0.35); padding: 5px 10px; font: inherit; cursor: pointer; }
+    #bar button.on { background: rgba(79,240,255,0.2); color: #fff; }
+    #anims { top: auto; bottom: 12px; }
+  </style>
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three/build/three.module.min.js", "three/addons/": "./vendor/three/jsm/" } }
+  </script>
+</head>
+<body>
+  <canvas id="gl"></canvas>
+  <div id="bar"></div>
+  <div id="bar2" style="position:fixed;bottom:12px;left:12px;right:12px;display:flex;flex-wrap:wrap;gap:6px"></div>
+  <script type="module">
+    // Preview every Blender-built model and its animation clips.
+    import * as THREE from 'three';
+    import { Assets } from './js/assets.js';
+    import { Post } from './js/post.js';
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gl') });
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    const post = new Post(renderer);
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#07080b');
+    scene.add(new THREE.HemisphereLight('#8fb0c0', '#1a0a10', 1.4));
+    const key = new THREE.DirectionalLight('#fff', 2.2); key.position.set(3, 5, 4); scene.add(key);
+    const rim = new THREE.DirectionalLight('#ff2a4a', 2); rim.position.set(-3, 2, -4); scene.add(rim);
+    const floor = new THREE.Mesh(new THREE.CircleGeometry(4, 48), new THREE.MeshStandardMaterial({ color: '#1b1c20' }));
+    floor.rotation.x = -Math.PI / 2; scene.add(floor);
+    const cam = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.1, 100);
+    await Assets.load();
+    const names = ['sable', 'wisp', 'hex', 'saint', 'saint_ghost', 'wraith', 'moth', 'warden', 'savepoint', 'chest'];
+    const params = new URLSearchParams(location.search);
+    let actor = null, current = params.get('m') || 'sable', yaw = +(params.get('yaw') || 0.5);
+    const bar = document.getElementById('bar'), bar2 = document.getElementById('bar2');
+    function show(name, anim = params.get('a') || 'idle') {
+      if (actor) { scene.remove(actor.root); }
+      current = name;
+      actor = Assets.gltf[name].animations.length ? Assets.actor(name) : { root: Assets.scene(name), update() {}, play() {}, clips: {} };
+      scene.add(actor.root);
+      actor.play(anim);
+      bar.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b.textContent === name));
+      bar2.innerHTML = '';
+      for (const c of Object.keys(actor.clips)) {
+        const b = document.createElement('button'); b.textContent = c;
+        b.onclick = () => actor.play(c, { once: !['idle', 'run', 'guard'].includes(c) });
+        bar2.appendChild(b);
+      }
+      const h = name === 'warden' ? 4.2 : 2.2;
+      cam.userData.h = h;
+    }
+    for (const n of names) { const b = document.createElement('button'); b.textContent = n; b.onclick = () => show(n); bar.appendChild(b); }
+    show(current);
+    if (params.get('t')) { actor.mixer?.update(+params.get('t')); }
+    addEventListener('pointermove', (e) => { if (e.buttons) yaw += e.movementX * 0.01; });
+    addEventListener('resize', () => { post.resize(); cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); });
+    const clock = new THREE.Clock();
+    let t = 0;
+    (function loop() {
+      requestAnimationFrame(loop);
+      const dt = params.get('t') ? 0 : clock.getDelta(); t += dt;
+      actor.update(dt);
+      const h = cam.userData.h;
+      cam.position.set(Math.sin(yaw) * h * 1.9, h * 0.62, Math.cos(yaw) * h * 1.9);
+      cam.lookAt(0, h * 0.45, 0);
+      post.render(scene, cam, dt, t);
+    })();
+  </script>
+</body>
+</html>

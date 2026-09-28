@@ -1,0 +1,55 @@
+{
+  "name": "The Null Spire — Lower Strata",
+  "units": "meters; game space: x right, y up, z toward camera (Blender: x, -z, y)",
+  "walk": [
+    { "id": "landing",   "type": "box",  "x0": -7,  "x1": 7,   "z0": -7,   "z1": 7,   "y": 0 },
+    { "id": "bridge1",   "type": "box",  "x0": -2,  "x1": 2,   "z0": -31,  "z1": -6.5, "y": 0 },
+    { "id": "atrium",    "type": "box",  "x0": -9,  "x1": 9,   "z0": -47,  "z1": -30.5, "y": 0 },
+    { "id": "stair1",    "type": "ramp", "x0": -3,  "x1": 3,   "z0": -61,  "z1": -46.5, "yz0": 6, "yz1": 0 },
+    { "id": "gallery",   "type": "box",  "x0": -11, "x1": 11,  "z0": -81,  "z1": -60.5, "y": 6 },
+    { "id": "bridge2",   "type": "box",  "x0": 10.5,"x1": 31,  "z0": -72,  "z1": -68,  "y": 6 },
+    { "id": "reliquary", "type": "box",  "x0": 30.5,"x1": 44,  "z0": -78,  "z1": -62,  "y": 6 },
+    { "id": "stair2",    "type": "ramp", "x0": -3,  "x1": 3,   "z0": -97,  "z1": -80.5, "yz0": 14, "yz1": 6 },
+    { "id": "sanctum",   "type": "box",  "x0": -13, "x1": 13,  "z0": -123, "z1": -96.5, "y": 14 }
+  ],
+  "pillars": [
+    { "x": -16, "z": -20, "r": 3.2 }, { "x": 17, "z": -38, "r": 4.0 },
+    { "x": -20, "z": -55, "r": 2.6 }, { "x": 20, "z": -86, "r": 3.5 },
+    { "x": -22, "z": -92, "r": 4.4 }, { "x": 52, "z": -70, "r": 3.0 },
+    { "x": -18, "z": -128, "r": 5.0 }, { "x": 19, "z": -130, "r": 5.0 },
+    { "x": 0,  "z": -150, "r": 7.0 }, { "x": -34, "z": -10, "r": 5.5 },
+    { "x": 34, "z": -5, "r": 4.5 }
+  ],
+  "spawn": { "x": 0, "z": 3, "rot": 3.14159 },
+  "zones": [
+    { "id": "z_landing", "name": "Landing of the Unborn",   "x0": -7, "x1": 7, "z0": -7, "z1": 7 },
+    { "id": "z_atrium",  "name": "Atrium of Static Rain",   "x0": -9, "x1": 9, "z0": -47, "z1": -30.5 },
+    { "id": "z_gallery", "name": "Gallery of Silicate Saints", "x0": -11, "x1": 11, "z0": -81, "z1": -60.5 },
+    { "id": "z_reliq",   "name": "Reliquary of the Moth",   "x0": 30.5, "x1": 44, "z0": -78, "z1": -62 },
+    { "id": "z_sanctum", "name": "Sanctum of the Warden",   "x0": -13, "x1": 13, "z0": -123, "z1": -96.5 }
+  ],
+  "savepoints": [
+    { "id": "sp_atrium",  "x": 6,  "z": -40 },
+    { "id": "sp_gallery", "x": -8, "z": -78 }
+  ],
+  "npcs": [
+    { "id": "npc_wisp", "model": "wisp", "x": -3, "z": -36, "rot": 0.6, "dialogue": "meet_wisp", "joins": "wisp" },
+    { "id": "npc_hex",  "model": "hex",  "x": 38, "z": -74, "rot": -1.2, "dialogue": "meet_hex", "joins": "hex" },
+    { "id": "npc_echo", "model": "saint_ghost", "x": 5, "z": -3, "rot": 2.4, "dialogue": "echo_landing" }
+  ],
+  "chests": [
+    { "id": "c1", "x": 7.5, "z": -46, "item": "tonic", "qty": 3 },
+    { "id": "c2", "x": 42, "z": -63.5, "item": "phoenix", "qty": 2 },
+    { "id": "c3", "x": -10, "z": -62, "item": "ether", "qty": 2 },
+    { "id": "c4", "x": 11, "z": -100, "item": "elixir", "qty": 1 }
+  ],
+  "enemies": [
+    { "id": "e1", "x": 0,   "z": -20, "group": "wraiths_2",   "patrol": 3 },
+    { "id": "e2", "x": -4,  "z": -44, "group": "saint_1",     "patrol": 2.5 },
+    { "id": "e3", "x": 5,   "z": -68, "group": "saint_wraith","patrol": 4 },
+    { "id": "e4", "x": -6,  "z": -74, "group": "moth_1",      "patrol": 3 },
+    { "id": "e5", "x": 22,  "z": -70, "group": "wraiths_3",   "patrol": 5 },
+    { "id": "e6", "x": 36,  "z": -66, "group": "moth_saint",  "patrol": 2.5 }
+  ],
+  "boss": { "id": "warden", "x": 0, "z": -114, "group": "warden", "trigger": 9 }
+}

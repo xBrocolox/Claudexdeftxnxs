@@ -1,5 +1,7 @@
 # NULL//CATHEDRAL
 
+> **Also in this repo: [VESTIGE//NULL](jrpg/README.md).** It's a darkcore tribute JRPG in three.js, with models, rigs and animation built in Blender and an optional PixVerse footage pipeline ([`pipeline/`](pipeline/README.md)).
+
 A darkcore / gothcore / glitch-signal trading card game that runs in the browser. There's no build step and no dependencies. It takes its mood from vast silent megastructures, biomechanical saints and corrupted transmissions. Every card, name and piece of art is original.
 
 ## Play

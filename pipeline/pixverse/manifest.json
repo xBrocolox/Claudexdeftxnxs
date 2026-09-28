@@ -30,7 +30,7 @@
     {
       "id": "enemy_cocoon_moth",
       "kind": "enemy",
-      "prompt": "a giant biomechanical moth emerging from a cracked glass cocoon, wings made of static and circuit veins, slow wing beats, dreamlike like the game Kuon/Cocoon",
+      "prompt": "a giant biomechanical moth emerging from a cracked glass cocoon, wings made of static and circuit veins, slow wing beats, dreamlike and melancholic",
       "aspect_ratio": "1:1",
       "chroma": true,
       "frames": 24,

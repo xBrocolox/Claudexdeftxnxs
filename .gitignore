@@ -1,0 +1,5 @@
+# downloaded PixVerse videos (large source files; processed output lives in jrpg/assets/pixverse)
+pipeline/pixverse/raw/*
+!pipeline/pixverse/raw/.gitkeep
+__pycache__/
+*.blend1

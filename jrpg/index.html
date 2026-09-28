@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>VESTIGE//NULL</title>
+  <meta name="description" content="A darkcore, glitchcore tribute JRPG that runs in the browser.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Share+Tech+Mono&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/game.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/build/three.module.min.js",
+        "three/addons/": "./vendor/three/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="gl"></canvas>
+
+  <div id="ui">
+    <div id="popups"></div>
+    <div id="toasts"></div>
+  </div>
+
+  <section id="title">
+    <div class="logo">
+      <span class="logo-a" data-text="Vestige">Vestige</span>
+      <span class="logo-b" data-text="//NULL">//NULL</span>
+    </div>
+    <div class="tagline">the lower strata of a spire that never ends</div>
+    <div class="title-foot">A darkcore tribute · WASD / E / Esc · gamepad &amp; touch supported</div>
+  </section>
+
+  <div id="splash"></div>
+  <div id="fade"></div>
+
+  <div id="loading">
+    <div class="l-logo">VESTIGE<em>//</em>NULL</div>
+    <div class="l-bar"><i></i></div>
+    <div class="l-text">RECONSTRUCTING SIGNAL…</div>
+  </div>
+
+  <div id="touch">
+    <div id="joy"><div class="knob"></div></div>
+    <div class="tbtns">
+      <button data-btn="menu">MENU</button>
+      <button data-btn="back">✕</button>
+      <button data-btn="ok" class="big">◎</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
