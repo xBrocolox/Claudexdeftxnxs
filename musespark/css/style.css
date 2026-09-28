@@ -118,6 +118,10 @@ main { max-width: 1240px; margin: 0 auto; padding: 0 20px 60px; }
 .badge.pink { color: var(--pink); border-color: var(--pink); } .badge.teal { color: var(--teal); border-color: var(--teal); } .badge.amber { color: var(--amber); border-color: var(--amber); }
 .style-line { margin-top: 8px; font: 12px var(--mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .song-card .actions { display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 16px 16px; }
+.empty-cta { text-align: center; padding: 36px 20px; margin-bottom: 18px; border: 1px dashed var(--line); border-radius: var(--radius); background: var(--panel); }
+.empty-cta .row { justify-content: center; }
+#scr-smv.is-empty .smv, #scr-studio.is-empty .studio, #scr-stage.is-empty .lyrics, #scr-stage.is-empty .stage-controls { display: none; }
+.stage .empty-cta { margin: 20px 16px; background: rgba(10, 6, 18, .75); }
 .empty { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--radius); }
 
 /* ── dialog ── */
@@ -176,7 +180,8 @@ dialog::backdrop { background: rgba(5, 2, 10, .75); backdrop-filter: blur(4px); 
 .stage:fullscreen { border-radius: 0; border: 0; }
 #stage-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .stage > *:not(canvas) { position: relative; }
-.stage-top { display: flex; justify-content: space-between; align-items: flex-start; padding: 16px; }
+.stage-top { display: flex; justify-content: space-between; align-items: flex-start; padding: 16px; gap: 10px; }
+.stage-top .row { margin: 0; }
 .stage-top select { background: rgba(0, 0, 0, .5); }
 .score { text-align: right; }
 .score b { display: block; font-size: 44px; line-height: 1; background: linear-gradient(120deg, var(--amber), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; font-variant-numeric: tabular-nums; }

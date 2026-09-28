@@ -24,6 +24,8 @@ const Router = (() => {
       const song = id ? await DB.song(id) : songs.find(s => s.id === Settings.get('lastSong')) || songs[0] || null;
       if (song) Settings.set('lastSong', song.id);
       fillPickers(songs, song, name);
+      $$(`[data-empty=${name}]`).forEach(e => { e.hidden = songs.length > 0; });
+      $('#scr-' + name).classList.toggle('is-empty', !songs.length);
       if (name === 'stage') Stage.show(song);
       if (name === 'smv') SMV.show(song);
       if (name === 'studio') Studio.show(song);
@@ -47,7 +49,7 @@ const Router = (() => {
 
 // ═════════ LIBRARY ═════════
 const Library = (() => {
-  let editing = null;
+  let editing = null, afterRoute = null;
   const urls = [];
 
   const STATUS = { none: ['No lyrics', 'grey'], unsynced: ['Not synced', 'grey'], partial: ['Partly synced', 'amber'], lines: ['Lines synced', 'teal'], words: ['Words synced', 'pink'] };
@@ -86,8 +88,9 @@ const Library = (() => {
     }
   }
 
-  function open(song = null) {
-    editing = song;
+  // afterRoute: when importing from Sync/Sing/SMV, open that screen with the new song once it's saved.
+  function open(song = null, route = null) {
+    editing = song; afterRoute = song ? null : route;
     const form = $('#song-form'), f = form.elements;
     form.reset();
     $('#dlg-song-title').textContent = song ? `Edit “${song.title}”` : 'Import Suno song';
@@ -95,6 +98,7 @@ const Library = (() => {
     f.artist.value = song ? song.artist || '' : Settings.get('founder');
     f.style.value = song ? song.style || '' : '';
     f.lyrics.value = song ? song.lyricsRaw || Lyrics.toSheet(song.lines) : '';
+    f.audio.required = !!afterRoute;
     for (const k of ['audio', 'cover', 'instrumental', 'vocals']) $(`[data-has=${k}]`, form).textContent = song && song[k] ? 'Current file kept unless you choose a new one' : '';
     $('#dlg-song').showModal();
   }
@@ -124,8 +128,10 @@ const Library = (() => {
     }
     await DB.saveSong(s);
     toast(editing ? 'Song updated' : `“${s.title}” imported`);
-    editing = null;
-    if (Router.current === 'library') render(); else Router.go();
+    const route = afterRoute;
+    editing = null; afterRoute = null;
+    if (route) location.hash = `#/${route}/${s.id}`;
+    else if (Router.current === 'library') render(); else Router.go();
   }
 
   // Drop audio (optionally with same-named .lrc/.txt lyric files) straight onto the library.
@@ -148,19 +154,21 @@ const Library = (() => {
     render();
   }
 
-  async function addDemo() {
+  async function addDemo(route = 'stage') {
     toast('Composing “First Spark”…');
     try {
       const s = await Demo.create();
       await DB.saveSong(s);
-      location.hash = '#/stage/' + s.id;
+      location.hash = `#/${route}/${s.id}`;
     } catch (e) { console.error(e); toast('Could not render the demo: ' + e.message, 'err'); }
   }
 
   function init() {
     $('#lib-add').onclick = () => open();
-    $('#lib-demo').onclick = addDemo;
-    $('#btn-demo').onclick = addDemo;
+    $('#lib-demo').onclick = () => addDemo();
+    $('#btn-demo').onclick = () => addDemo();
+    $$('[data-import]').forEach(b => { b.onclick = () => open(null, b.dataset.import); });
+    $$('[data-demo]').forEach(b => { b.onclick = () => addDemo(b.dataset.demo); });
     $('#song-form').addEventListener('submit', (e) => {
       if (e.submitter && e.submitter.value === 'save') { e.preventDefault(); save().then(() => $('#dlg-song').close()).catch(err => toast(err.message, 'err')); }
     });
@@ -401,7 +409,8 @@ function showFounder() {
   const pill = $('#vs-pill');
   VoiceStudio.onState((s) => { pill.dataset.state = s; pill.title = s === 'online' ? `VoiceStudio connected (${VoiceStudio.base()})` : `VoiceStudio not reachable at ${VoiceStudio.base()}`; });
   pill.onclick = () => { location.hash = '#/settings'; };
-  VoiceStudio.ping().catch(() => {});
+  // Check the connection on load only once VoiceStudio has been reached before; otherwise wait for Settings › Test.
+  if (Settings.get('vsSeen')) VoiceStudio.ping().catch(() => {});
 
   window.addEventListener('hashchange', Router.go);
   Router.go();

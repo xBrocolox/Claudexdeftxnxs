@@ -331,11 +331,11 @@ const SMV = (() => {
     $('#sm-export').textContent = '⏺ Render video'; $('#sm-progress').hidden = true; setControls(true);
     if (ex.cancelled) { $('#sm-status').textContent = 'Render cancelled.'; return; }
     const ext = blob.type.includes('mp4') ? 'mp4' : 'webm';
-    const a = $('#sm-download');
-    if (a.href) URL.revokeObjectURL(a.href);
-    a.href = URL.createObjectURL(blob);
-    const v = $('#sm-result'); v.src = a.href; v.hidden = false;
-    a.download = `${safeName(song.title)}-${o.theme}-${o.aspect.replace(':', 'x')}.${ext}`; a.hidden = false;
+    const v = $('#sm-result');
+    if (v.src) URL.revokeObjectURL(v.src);
+    v.src = URL.createObjectURL(blob); v.hidden = false;
+    const name = `${safeName(song.title)}-${o.theme}-${o.aspect.replace(':', 'x')}.${ext}`;
+    const b = $('#sm-download'); b.hidden = false; b.onclick = () => download(blob, name);
     $('#sm-status').textContent = `Done: ${(blob.size / 1048576).toFixed(1)} MB ${ext.toUpperCase()}. ${ext === 'webm' ? 'Most social apps accept WebM. Convert it with ffmpeg if yours doesn’t.' : ''}`;
   }
   function cancel() { if (exporting) { exporting.cancelled = true; finish(); } }

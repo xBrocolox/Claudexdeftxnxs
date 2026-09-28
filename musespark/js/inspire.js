@@ -142,6 +142,7 @@ const Inspire = (() => {
       voiceBlob = await VoiceStudio.speak(text, { voice: $('#vs-voice').value, speed: +$('#vs-speed').value || 1 });
       const a = $('#vs-audio'); a.hidden = false; a.src = URL.createObjectURL(voiceBlob); a.play().catch(() => {});
       $('#vs-attach').disabled = false;
+      loadVoices();
     } catch (e) { toast(e.message, 'err'); }
     btn.disabled = false; btn.textContent = 'Generate voice';
   }
@@ -163,8 +164,8 @@ const Inspire = (() => {
   function init() {
     $('#ins-structure').innerHTML = Object.keys(STRUCTURES).map(k => `<option>${k}</option>`).join('');
     $('#ins-spark').onclick = () => { r = rng(Date.now()); spark(); };
-    $('#ins-copy').onclick = () => navigator.clipboard.writeText(prompt()).then(() => toast('Style prompt copied. Paste it into Suno.'));
-    $('#ins-copy-lyrics').onclick = () => navigator.clipboard.writeText($('#ins-lyrics').value).then(() => toast('Blueprint copied'));
+    $('#ins-copy').onclick = () => copyText(prompt(), 'Style prompt copied. Paste it into Suno.', $('#ins-prompt'));
+    $('#ins-copy-lyrics').onclick = () => copyText($('#ins-lyrics').value, 'Blueprint copied', $('#ins-lyrics'));
     $('#ins-blueprint').onclick = blueprint;
     $('#ins-structure').onchange = blueprint;
     let deb; $('#ins-theme').oninput = () => { clearTimeout(deb); deb = setTimeout(blueprint, 300); };
@@ -181,7 +182,8 @@ const Inspire = (() => {
     spark(); blueprint(); challenge();
   }
 
-  async function show() { fillSongSelect(); loadVoices(); }
+  // Only ask VoiceStudio for voices once it has been reached, so a missing backend doesn't log failed requests.
+  async function show() { fillSongSelect(); if (VoiceStudio.state === 'online' || Settings.get('vsSeen')) loadVoices(); }
 
   return { init, show };
 })();

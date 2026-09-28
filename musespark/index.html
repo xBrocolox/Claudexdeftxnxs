@@ -119,8 +119,14 @@
         <div><h2>Sync studio</h2><p class="muted" id="studio-title">Choose a song to sync.</p></div>
         <div class="row">
           <select class="song-pick" data-route="studio"></select>
+          <button class="btn ghost small" data-import="studio">+ Import song</button>
         </div>
       </header>
+      <div class="empty-cta" data-empty="studio" hidden>
+        <h3>No songs yet</h3>
+        <p class="muted">Import a song you made with Suno, or load the demo song to try this screen.</p>
+        <div class="row"><button class="btn" data-import="studio">+ Import song</button><button class="btn ghost" data-demo="studio">Load demo song</button></div>
+      </div>
       <div class="studio" id="studio-body">
         <div class="panel studio-side">
           <div class="transport">
@@ -161,8 +167,14 @@
       <div class="stage" id="stage">
         <canvas id="stage-bg"></canvas>
         <div class="stage-top">
-          <select class="song-pick" data-route="stage"></select>
+          <div class="row"><select class="song-pick" data-route="stage"></select>
+          <button class="btn ghost small" data-import="stage">+ Import song</button></div>
           <div class="score" id="stage-score" hidden><b>0</b><span>SPARK SCORE</span></div>
+        </div>
+        <div class="empty-cta" data-empty="stage" hidden>
+          <h3>No songs yet</h3>
+          <p class="muted">Import a song you made with Suno, or load the demo song to try this screen.</p>
+          <div class="row"><button class="btn" data-import="stage">+ Import song</button><button class="btn ghost" data-demo="stage">Load demo song</button></div>
         </div>
         <div class="lyrics" id="stage-lyrics">
           <div class="section-tag" id="lx-section"></div>
@@ -200,8 +212,14 @@
     <section class="screen" id="scr-smv">
       <header class="page-head">
         <div><h2>SMV maker</h2><p class="muted">Build a song music video with lyrics, visuals and your cover art, then export it as video.</p></div>
-        <div class="row"><select class="song-pick" data-route="smv"></select></div>
+        <div class="row"><select class="song-pick" data-route="smv"></select>
+          <button class="btn ghost small" data-import="smv">+ Import song</button></div>
       </header>
+      <div class="empty-cta" data-empty="smv" hidden>
+        <h3>No songs yet</h3>
+        <p class="muted">Import a song you made with Suno, or load the demo song to try this screen.</p>
+        <div class="row"><button class="btn" data-import="smv">+ Import song</button><button class="btn ghost" data-demo="smv">Load demo song</button></div>
+      </div>
       <div class="smv">
         <div class="smv-view">
           <div class="smv-frame" id="smv-frame"><canvas id="smv-canvas"></canvas></div>
@@ -249,7 +267,7 @@
           <div class="progress" id="sm-progress" hidden><i></i></div>
           <div class="muted small" id="sm-status">Rendering happens in real time. Keep this tab in the foreground until it finishes.</div>
           <video id="sm-result" controls playsinline hidden></video>
-          <a class="btn" id="sm-download" hidden>⬇ Download video</a>
+          <button class="btn" id="sm-download" hidden>⬇ Save video</button>
         </div>
       </div>
     </section>

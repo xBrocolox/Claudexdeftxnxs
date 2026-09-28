@@ -32,7 +32,35 @@ function askConfirm(msg, okLabel = 'Confirm') {
   return new Promise(res => d.addEventListener('close', () => res(d.returnValue === 'yes'), { once: true }));
 }
 
-function download(blob, name) {
+// Copy text; if the clipboard is blocked, select the text in `fallbackEl` so the user can copy it by hand.
+async function copyText(text, okMsg, fallbackEl) {
+  try { await navigator.clipboard.writeText(text); toast(okMsg); }
+  catch (e) {
+    if (fallbackEl) {
+      if (fallbackEl.select) { fallbackEl.focus(); fallbackEl.select(); }
+      else { const r = document.createRange(); r.selectNodeContents(fallbackEl); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+    }
+    toast('Copying is blocked here. The text is selected, so press Ctrl+C (⌘C on Mac).', 'err');
+  }
+}
+
+// Inside the claude.ai artifact viewer, files go through its `downloads` capability (the viewer confirms each save);
+// everywhere else a normal download link is used.
+let downloadsCap = null;
+const getDownloads = () => downloadsCap || (downloadsCap = window.claude && window.claude.use ? window.claude.use('downloads').catch(() => null) : Promise.resolve(null));
+
+async function download(blob, name) {
+  const cap = await getDownloads();
+  if (cap) {
+    // The viewer allows a fixed list of extensions: .lrc travels as text, .m4a as .mp4.
+    const filename = name.replace(/\.lrc$/i, '.lrc.txt').replace(/\.m4a$/i, '.mp4');
+    try { await cap.save({ filename, data: blob }); toast(`Saved ${filename}`); }
+    catch (e) {
+      if (e && e.code === 'declined') return;
+      toast(e && e.code === 'rate_limited' ? 'A save prompt is already open.' : 'Saving files isn’t available in this view.', 'err');
+    }
+    return;
+  }
   const a = h('a');
   a.href = URL.createObjectURL(blob);
   a.download = name;
@@ -45,7 +73,7 @@ const safeName = (s) => String(s || 'musespark').replace(/[^\w\- ]+/g, '').trim(
 // ═════════ SETTINGS (localStorage, per viewer) ═════════
 const Settings = (() => {
   const KEY = 'musespark.settings.v1';
-  const defaults = { vsUrl: 'http://127.0.0.1:3900', vsKey: '', offsetMs: 0, founder: 'The Founder' };
+  const defaults = { vsUrl: 'http://127.0.0.1:3900', vsKey: '', offsetMs: 0, founder: 'The Founder', vsSeen: false };
   let d = { ...defaults };
   try { Object.assign(d, JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) { /* private mode */ }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) { /* private mode */ } }

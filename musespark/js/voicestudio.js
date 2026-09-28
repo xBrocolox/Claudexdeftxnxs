@@ -4,7 +4,7 @@
 const VoiceStudio = (() => {
   let state = 'unknown'; // unknown | online | offline
   const listeners = new Set();
-  const setState = (s, info) => { state = s; listeners.forEach(f => f(s, info)); };
+  const setState = (s, info) => { state = s; if (s === 'online') Settings.set('vsSeen', true); listeners.forEach(f => f(s, info)); };
 
   const base = () => String(Settings.get('vsUrl') || 'http://127.0.0.1:3900').replace(/\/+$/, '');
   function headers(extra = {}) {

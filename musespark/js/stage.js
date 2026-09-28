@@ -141,7 +141,7 @@ const Stage = (() => {
   // ═════════ TAKES ═════════
   async function renderTakes() {
     const ul = $('#takes'); ul.innerHTML = '';
-    if (!song) return;
+    if (!song) { ul.innerHTML = '<li class="muted small">Takes you record appear here.</li>'; return; }
     const takes = await DB.takesFor(song.id);
     if (!takes.length) { ul.innerHTML = '<li class="muted small">No takes yet. Turn on the mic and press ● Record take.</li>'; return; }
     for (const t of takes) {
